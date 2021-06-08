@@ -3,12 +3,29 @@
   remote_user: root
   become: yes
   tasks:
-  - name: Upgrade all packages
+  - name: Import a key from a url
+    rpm_key:
+      state: present
+      key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7
+
+  - name: Enable EPEL Repository on CentOS 7
     yum:
-      name: '*'
+      name: epel-release
       state: latest
 
-  - name: Install the 'Development tools' package group
+  # - name: Upgrade all packages
+  #   yum:
+  #     name: '*'
+  #     state: latest
+
+  # - name: Install the 'Development tools' package group
+  #   yum:
+  #     name: "@Development tools"
+  #     state: present
+  - name: Install a list of packages (suitable replacement for 2.11 loop deprecation warning)
     yum:
-      name: "@Development tools"
+      name:
+        - htop
+        - iotop
+        - net-tools
       state: present
