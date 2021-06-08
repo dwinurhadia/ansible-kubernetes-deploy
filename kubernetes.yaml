@@ -28,4 +28,11 @@
         - htop
         - iotop
         - net-tools
+        - yum-utils
       state: present
+
+  - name: Add repository Docker
+    yum_repository:
+      name: docker-ce                
+      description: Docker Repo
+      baseurl: https://download.docker.com/linux/centos/docker-ce.repo
