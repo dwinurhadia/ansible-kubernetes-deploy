@@ -77,6 +77,12 @@
     selinux:
       state: disabled
   
+  - name: Stop and disable firewalld.
+    service:
+      name: firewalld
+      state: stopped
+      enabled: False
+
   - name: Ensure net.bridge.bridge-nf-call-ip6tables is set to 1
     sysctl:
      name: net.bridge.bridge-nf-call-ip6tables
