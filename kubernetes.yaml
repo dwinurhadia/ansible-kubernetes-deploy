@@ -13,15 +13,16 @@
       name: epel-release
       state: latest
 
-  # - name: Upgrade all packages
-  #   yum:
-  #     name: '*'
-  #     state: latest
+  - name: Upgrade all packages
+    yum:
+      name: '*'
+      state: latest
 
-  # - name: Install the 'Development tools' package group
-  #   yum:
-  #     name: "@Development tools"
-  #     state: present
+  - name: Install the 'Development tools' package group
+    yum:
+      name: "@Development tools"
+      state: present
+
   - name: Install a list of packages (suitable replacement for 2.11 loop deprecation warning)
     yum:
       name:
@@ -32,7 +33,33 @@
       state: present
 
   - name: Add repository Docker
-    yum_repository:
-      name: docker-ce                
-      description: Docker Repo
-      baseurl: https://download.docker.com/linux/centos/docker-ce.repo
+    get_url:
+      url: https://download.docker.com/linux/centos/docker-ce.repo
+      dest: /etc/yum.repos.d/docker-ce.repo
+
+  - name: Enable Docker Edge repo
+    ini_file:
+      dest: /etc/yum.repos.d/docker-ce.repo
+      section: 'docker-ce-edge'
+      option: enabled
+      value: 0
+
+  # - name: Enable Docker Test repo
+  #   ini_file:
+  #     dest: /etc/yum.repos.d/docer-ce.repo
+  #     section: 'docker-ce-test'
+  #     option: enabled
+  #     value: 0
+
+  - name: Install a list of packages docker 
+    yum:
+      name:
+        - docker-ce
+        - docker-ce-cli 
+        - containerd.io
+      state: present
+
+  - name: Make sure a Docker service unit is running
+    ansible.builtin.systemd:
+      state: started
+      name: docker
