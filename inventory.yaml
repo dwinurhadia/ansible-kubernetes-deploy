@@ -1,0 +1,5 @@
+[kubemaster]
+master.kube
+
+[kubenode]
+node1.kube
