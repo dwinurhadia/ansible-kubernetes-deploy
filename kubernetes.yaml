@@ -69,3 +69,25 @@
       enabled: yes
       masked: no
       name: docker
+
+  - name: Disable SELinux
+    command: setenforce 0
+
+  - name: Disable SELinux on reboot
+    selinux:
+      state: disabled
+  
+  - name: Ensure net.bridge.bridge-nf-call-ip6tables is set to 1
+    sysctl:
+     name: net.bridge.bridge-nf-call-ip6tables
+     value: '1'
+     sysctl_set: yes
+     state: present
+
+  - name: Ensure net.bridge.bridge-nf-call-iptables is set to 1
+    sysctl:
+     name: net.bridge.bridge-nf-call-iptables
+     value: '1'
+     sysctl_set: yes
+     state: present
+     reload: yes
