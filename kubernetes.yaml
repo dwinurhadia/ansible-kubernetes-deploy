@@ -105,3 +105,22 @@
       path: /etc/fstab
       regexp: '^/dev/mapper/centos-swap\s*swap\s*swap\s*defaults\s*[0-9]\s*[0-9]$'
       replace: '# /dev/mapper/centos-swap swap                    swap    defaults        0 0'
+
+  - name: Install a list of packages Kubernetes
+    yum:
+      name:
+        - kubelet
+        - kubeadm
+        - kubectl
+      state: present
+
+  - name: Make sure a Kubelet service unit is running
+    ansible.builtin.systemd:
+      state: started
+      name: kubelet
+  
+  - name: Make symlink Kubelet service unit at reboot
+    ansible.builtin.systemd:
+      enabled: yes
+      masked: no
+      name: kubelet
