@@ -1,0 +1,14 @@
+---
+- hosts: [kubemaster,kubenode]
+  remote_user: root
+  become: yes
+  tasks:
+  - name: Upgrade all packages
+    yum:
+      name: '*'
+      state: latest
+
+  - name: Install the 'Development tools' package group
+    yum:
+      name: "@Development tools"
+      state: present
