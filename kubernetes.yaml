@@ -42,7 +42,7 @@
       dest: /etc/yum.repos.d/docker-ce.repo
       section: 'docker-ce-edge'
       option: enabled
-      value: 0
+      value: '0'
 
   # - name: Enable Docker Test repo
   #   ini_file:
@@ -62,4 +62,10 @@
   - name: Make sure a Docker service unit is running
     ansible.builtin.systemd:
       state: started
+      name: docker
+  
+  - name: Make symlink Docker service unit at reboot
+    ansible.builtin.systemd:
+      enabled: yes
+      masked: no
       name: docker
